@@ -3,6 +3,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="theme-color" content="#0056b3">
+        <link rel="manifest" href="manifest.json">
+
         <title>Notícias - Banco Imobiliário</title>
         
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -19,7 +25,6 @@
                 overflow: hidden;
             }
 
-            /* Botão Quadrado Gigante */
             #quadrado-noticia {
                 width: 85vmin; 
                 height: 85vmin; 
@@ -53,7 +58,6 @@
                 margin-top: 4vmin; 
             }
 
-            /* Modal / Pop-up */
             #modal-overlay {
                 display: none; 
                 position: fixed; 
@@ -183,9 +187,8 @@
                 const noticia = noticiasAtuais[indice];
                 noticiasAtuais.splice(indice, 1);
 
-                // Tocar som local
                 if (noticia.tipo === "sorte") {
-                    audioSorte.currentTime = 0; // Reseta para o início caso clique rápido
+                    audioSorte.currentTime = 0;
                     audioSorte.play();
                 } else {
                     audioAzar.currentTime = 0;
@@ -193,7 +196,6 @@
                 }
 
                 const container = document.getElementById('container-noticia');
-                // innerHTML permite as tags <br> da sua array
                 container.innerHTML = `
                     <span class="noticia-mensagem">${noticia.msg}</span>
                     <span class="noticia-valor ${noticia.tipo}">${noticia.valor}</span>
@@ -204,7 +206,6 @@
 
             function fecharModal() {
                 document.getElementById('modal-overlay').style.display = 'none';
-                // Para o áudio ao fechar (opcional)
                 audioSorte.pause();
                 audioAzar.pause();
             }
