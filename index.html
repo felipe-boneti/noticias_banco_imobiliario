@@ -236,9 +236,13 @@
             }
 
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js')
-                .then(() => console.log("Service Worker registrado!"))
-                .catch(err => console.error("Erro ao registrar SW:", err));
+                navigator.serviceWorker.register('./sw.js', { scope: './' })
+                .then(reg => {
+                    console.log('App pronto!');
+                    // Força a atualização se houver uma nova versão
+                    reg.update();
+                })
+                .catch(err => console.log('Erro:', err));
             }
         </script>
     </body>
