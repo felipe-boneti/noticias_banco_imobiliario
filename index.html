@@ -24,17 +24,17 @@
 
         <style>
             @media (orientation: landscape) {
-            #quadrado-noticia {
-                width: 70vh; /* Ajusta o tamanho baseado na altura da tela quando deitado */
-                height: 70vh;
+                #quadrado-noticia {
+                    width: 70vh; /* Ajusta o tamanho baseado na altura da tela quando deitado */
+                    height: 70vh;
+                }
+                h2 {
+                    font-size: 10vh;
+                }
+                .icon-jornal {
+                    font-size: 25vh;
+                }
             }
-            h2 {
-                font-size: 10vh;
-            }
-            .icon-jornal {
-                font-size: 25vh;
-            }
-        }
 
             body {
                 margin: 0; 
@@ -45,6 +45,8 @@
                 background-color: #f4f7f6; 
                 font-family: 'Verdana', sans-serif;
                 overflow: hidden;
+                min-height: 100vh;
+                width: 100vw;
             }
 
             #quadrado-noticia {
@@ -234,7 +236,9 @@
             }
 
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js');
+                navigator.serviceWorker.register('sw.js')
+                .then(() => console.log("Service Worker registrado!"))
+                .catch(err => console.error("Erro ao registrar SW:", err));
             }
         </script>
     </body>
