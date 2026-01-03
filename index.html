@@ -13,29 +13,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="icon" type="image/png" href="img/icon.png">
 
-        <script>
-            // Registra o Service Worker para habilitar o modo App (Tela Cheia)
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('App pronto para instalar!'))
-                .catch(err => console.log('Erro no registro', err));
-            }
-        </script>
-
         <style>
-            @media (orientation: landscape) {
-                #quadrado-noticia {
-                    width: 70vh; /* Ajusta o tamanho baseado na altura da tela quando deitado */
-                    height: 70vh;
-                }
-                h2 {
-                    font-size: 10vh;
-                }
-                .icon-jornal {
-                    font-size: 25vh;
-                }
-            }
-
             body {
                 margin: 0; 
                 height: 100vh; 
@@ -108,6 +86,20 @@
             
             .sorte { color: #28a745; } 
             .azar { color: #dc3545; }
+
+            /* CSS para Paisagem deve vir por último para garantir prioridade */
+            @media (orientation: landscape) {
+                #quadrado-noticia {
+                    width: 70vh; 
+                    height: 70vh;
+                }
+                h2 {
+                    font-size: 10vh;
+                }
+                .icon-jornal {
+                    font-size: 25vh;
+                }
+            }
         </style>
     </head>
     <body>
@@ -127,78 +119,30 @@
         <audio id="audio-azar" src="sounds/fail.mp3" preload="auto"></audio>
 
         <script>
+            // Registro Simplificado do Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => reg.update()); // Força busca de nova versão
+            }
+
             const audioSorte = document.getElementById('audio-sorte');
             const audioAzar = document.getElementById('audio-azar');
 
             const noticiasOriginais = [
-                {
-                    msg: "Sorte no destino!<br>Cada jogador deve escolher um número de 1 a 6.",
-                    valor: "Jogue o dado e receba R$ 200,00<br>do jogador que possuir o número sorteado",
-                    tipo: "sorte" },
-                {
-                    msg: "Revés inesperado!<br>Cada jogador deve escolher um número de 1 a 6.",
-                    valor: "Jogue o dado e pague R$ 200,00<br>para o jogador que possuir o número sorteado",
-                    tipo: "azar"
-                },
-                {
-                    msg: "Seus investimentos renderam o dobro!",
-                    valor: "Receba a quantidade atual de seu dinheiro<br>(Máximo R$ 2.000,00)",
-                    tipo: "sorte"
-                },
-                {
-                    msg: "Crise no mercado financeiro!",
-                    valor: "Pague metade da sua<br>quantidade atual de dinheiro",
-                    tipo: "azar"
-                },
-                {
-                    msg: "Taxa de manutenção predial.",
-                    valor: "Pague R$ 50,00 por cada casa<br>e R$ 100,00 por cada hotel",
-                    tipo: "azar"
-                },
-                {
-                    msg: "Revalorização imobiliária!",
-                    valor: "Receba R$ 50,00 por cada casa<br>e R$ 100,00 por cada hotel",
-                    tipo: "sorte"
-                },
-                {
-                    msg: "Você faz aniversário hoje!",
-                    valor: "Receba R$ 50,00 de cada jogador",
-                    tipo: "sorte"
-                },
-                {
-                    msg: "Você venceu a partida de Poker na sede social.",
-                    valor: "Receba R$ 100,00 de cada jogador",
-                    tipo: "sorte"
-                },
-                {
-                    msg: "Você bateu no carro de um dos jogadores.",
-                    valor: "Pague R$ 50,00 para cada jogador",
-                    tipo: "azar"
-                },
-                {
-                    msg: "Você perdeu uma aposta esportiva para o grupo.",
-                    valor: "Pague R$ 100,00 para cada jogador",
-                    tipo: "azar"
-                },
-                {
-                    msg: "Restituição do Imposto de Renda.",
-                    valor: "Receba R$ 200,00",
-                    tipo: "sorte"
-                },
-                {
-                    msg: "Prêmio por produtividade no trabalho.",
-                    valor: "Receba R$ 150,00",
-                    tipo: "sorte" },
-                {
-                    msg: "Gastos com hospital.",
-                    valor: "Pague R$ 150,00",
-                    tipo: "azar"
-                },
-                {
-                    msg: "Multa por excesso de velocidade.",
-                    valor: "Pague R$ 100,00",
-                    tipo: "azar"
-                }
+                { msg: "Sorte no destino!<br>Cada jogador deve escolher um número de 1 a 6.", valor: "Jogue o dado e receba R$ 200,00<br>do jogador que possuir o número sorteado", tipo: "sorte" },
+                { msg: "Revés inesperado!<br>Cada jogador deve escolher um número de 1 a 6.", valor: "Jogue o dado e pague R$ 200,00<br>para o jogador que possuir o número sorteado", tipo: "azar" },
+                { msg: "Seus investimentos renderam o dobro!", valor: "Receba a quantidade atual de seu dinheiro<br>(Máximo R$ 2.000,00)", tipo: "sorte" },
+                { msg: "Crise no mercado financeiro!", valor: "Pague metade da sua<br>quantidade atual de dinheiro", tipo: "azar" },
+                { msg: "Taxa de manutenção predial.", valor: "Pague R$ 50,00 por cada casa<br>e R$ 100,00 por cada hotel", tipo: "azar" },
+                { msg: "Revalorização imobiliária!", valor: "Receba R$ 50,00 por cada casa<br>e R$ 100,00 por cada hotel", tipo: "sorte" },
+                { msg: "Você faz aniversário hoje!", valor: "Receba R$ 50,00 de cada jogador", tipo: "sorte" },
+                { msg: "Você venceu a partida de Poker na sede social.", valor: "Receba R$ 100,00 de cada jogador", tipo: "sorte" },
+                { msg: "Você bateu no carro de um dos jogadores.", valor: "Pague R$ 50,00 para cada jogador", tipo: "azar" },
+                { msg: "Você perdeu uma aposta esportiva para o grupo.", valor: "Pague R$ 100,00 para cada jogador", tipo: "azar" },
+                { msg: "Restituição do Imposto de Renda.", valor: "Receba R$ 200,00", tipo: "sorte" },
+                { msg: "Prêmio por produtividade no trabalho.", valor: "Receba R$ 150,00", tipo: "sorte" },
+                { msg: "Gastos com hospital.", valor: "Pague R$ 150,00", tipo: "azar" },
+                { msg: "Multa por excesso de velocidade.", valor: "Pague R$ 100,00", tipo: "azar" }
             ];
 
             let noticiasAtuais = [...noticiasOriginais];
@@ -233,16 +177,6 @@
                 document.getElementById('modal-overlay').style.display = 'none';
                 audioSorte.pause();
                 audioAzar.pause();
-            }
-
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./sw.js', { scope: './' })
-                .then(reg => {
-                    console.log('App pronto!');
-                    // Força a atualização se houver uma nova versão
-                    reg.update();
-                })
-                .catch(err => console.log('Erro:', err));
             }
         </script>
     </body>

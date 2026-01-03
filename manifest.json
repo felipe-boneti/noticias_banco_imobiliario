@@ -1,8 +1,7 @@
 {
-  "id": "/noticias_banco_imobiliario/",
   "name": "Notícias Banco Imobiliário",
   "short_name": "Jornal BI",
-  "start_url": "/noticias_banco_imobiliario/index.html",
+  "start_url": ".",
   "display": "standalone",
   "orientation": "landscape",
   "background_color": "#f4f7f6",
