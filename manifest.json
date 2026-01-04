@@ -1,6 +1,7 @@
 {
   "name": "Notícias Banco Imobiliário",
   "short_name": "Notícias",
+  "orientation": "landscape",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
