@@ -23,13 +23,15 @@
                 align-items: center;
                 background-color: #f4f7f6; 
                 font-family: 'Verdana', sans-serif;
-                overflow: hidden; /* Impede qualquer rolagem */
+                overflow: hidden; 
                 width: 100vw;
             }
 
+            /* Quadrado de Notícia com 90% da altura da tela */
             #quadrado-noticia {
-                width: 75vmin; /* Reduzido para garantir espaço livre */
-                height: 75vmin; 
+                width: 90vh; /* Mantém proporção 1:1 baseada na altura */
+                height: 90vh; 
+                max-width: 95vw; /* Garante que não estoure em telas muito estreitas */
                 background-color: white;
                 border: 1.5vmin solid #0056b3; 
                 border-radius: 4vmin;
@@ -41,6 +43,7 @@
                 box-shadow: 0 2vmin 5vmin rgba(0,0,0,0.15);
                 transition: transform 0.2s, box-shadow 0.2s;
                 user-select: none;
+                position: relative;
             }
 
             #quadrado-noticia:active { 
@@ -51,24 +54,24 @@
                 color: #0056b3;
                 font-weight: bolder;
                 margin: 0; 
-                font-size: 8vmin; 
+                font-size: 10vh; /* Ajustado para a nova escala */
                 letter-spacing: 0.5vmin; 
             }
 
             .icon-jornal { 
-                font-size: 40vmin; /* Ajustado proporcionalmente */
+                font-size: 50vh; /* Ajustado para a nova escala */
                 color: #333; 
                 margin-top: 4vmin; 
             }
 
-            /* Botão Atualizar - 20% da Altura da Tela */
+            /* Botão Atualizar - 20% da Altura da Tela no canto */
             #btn-refresh {
                 position: fixed;
                 bottom: 2vh; 
                 right: 2vh;
-                height: 20vh; /* 20% da altura da tela */
-                width: 20vh;  /* Mantém circular baseado na altura */
-                background-color: white;
+                height: 20vh;
+                width: 20vh;
+                background-color: rgba(255, 255, 255, 0.9); /* Leve transparência para não poluir */
                 border: 0.5vmin solid #0056b3;
                 border-radius: 50%;
                 box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.2);
@@ -85,6 +88,7 @@
                 object-fit: contain;
             }
 
+            /* Modal */
             #modal-overlay {
                 display: none; 
                 position: fixed; 
@@ -98,7 +102,7 @@
 
             #modal-conteudo {
                 background: white; 
-                padding: 10vmin; 
+                padding: 8vmin; 
                 border-radius: 5vmin;
                 max-width: 85%;
                 text-align: center;
@@ -107,33 +111,29 @@
 
             .noticia-mensagem { 
                 color: #333; 
-                font-weight: normal; 
-                font-size: 7vmin; 
+                font-size: 8vh; 
                 line-height: 1.2; 
             }
 
             .noticia-valor { 
                 display: block; 
-                margin-top: 6vmin; 
+                margin-top: 5vh; 
                 font-weight: bold; 
-                font-size: 9vmin; 
+                font-size: 10vh; 
             }
             
             .sorte { color: #28a745; } 
             .azar { color: #dc3545; }
             .neutro, .totem { color: #0056b3; }
 
+            /* Ajustes para telas horizontais (celular deitado) */
             @media (orientation: landscape) {
                 #quadrado-noticia {
-                    width: 65vh; 
-                    height: 65vh;
+                    height: 85vh; /* Um pouco menor para dar respiro */
+                    width: 85vh;
                 }
-                h2 { font-size: 8vh; }
-                .icon-jornal { font-size: 20vh; }
-                #btn-refresh {
-                    height: 15vh; /* Ligeiramente menor em paisagem para não cortar */
-                    width: 15vh;
-                }
+                .noticia-mensagem { font-size: 6vh; }
+                .noticia-valor { font-size: 8vh; }
             }
         </style>
     </head>
@@ -161,9 +161,9 @@
         <script type="module">
             import { noticiasOriginais } from './noticias.js';
 
+            // Service Worker
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js')
-                .then(reg => reg.update());
+                navigator.serviceWorker.register('sw.js').then(reg => reg.update());
             }
 
             const audioSorte = document.getElementById('audio-sorte');
@@ -187,7 +187,7 @@
                 } else if (noticia.tipo === "azar") {
                     audioAzar.currentTime = 0;
                     audioAzar.play();
-                } else if (noticia.tipo === "neutro" || noticia.tipo === "totem") {
+                } else {
                     audioNoticia.currentTime = 0;
                     audioNoticia.play();
                 }
@@ -203,9 +203,7 @@
 
             window.fecharModal = function() {
                 document.getElementById('modal-overlay').style.display = 'none';
-                audioSorte.pause();
-                audioAzar.pause();
-                audioNoticia.pause();
+                [audioSorte, audioAzar, audioNoticia].forEach(a => a.pause());
             }
         </script>
     </body>
