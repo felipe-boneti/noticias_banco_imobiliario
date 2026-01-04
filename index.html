@@ -112,6 +112,24 @@
                     font-size: 25vh;
                 }
             }
+
+            #btn-refresh {
+                position: fixed;
+                bottom: 5vmin;   /* Distância do fundo */
+                right: 5vmin;    /* Distância da direita */
+                width: 12vmin;
+                height: 12vmin;
+                background-color: white;
+                border-radius: 50%;
+                box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.2);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                z-index: 500; /* Garante que fica em cima do fundo, mas abaixo do modal */
+                border: 0.5vmin solid #0056b3;
+            }
+            
         </style>
     </head>
     <body>
@@ -119,6 +137,10 @@
         <div id="quadrado-noticia" onclick="sortearNoticia()">
             <h2>NOTÍCIA</h2>
             <i class="fas fa-newspaper icon-jornal"></i>
+        </div>
+
+        <div id="btn-refresh" onclick="location.reload()">
+            <img src="img/refresh.png" alt="Atualizar">
         </div>
 
         <div id="modal-overlay" onclick="fecharModal()">
