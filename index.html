@@ -1,146 +1,154 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Notícias - Banco Imobiliário</title>
-    
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#0056b3">
-    <link rel="manifest" href="manifest.json">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Notícias - Banco Imobiliário</title>
+        
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="theme-color" content="#0056b3">
+        <link rel="manifest" href="manifest.json">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        body {
-            margin: 0; 
-            height: 100dvh; 
-            display: flex;
-            justify-content: center; 
-            align-items: center;
-            background-color: #f4f7f6; 
-            font-family: 'Verdana', sans-serif;
-            overflow: hidden;
-            width: 100vw;
-        }
-
-        #quadrado-noticia {
-            height: 90dvh; 
-            width: 90dvh; 
-            max-width: 95vw;
-            background-color: white;
-            border: 1.2vmin solid #0056b3; 
-            border-radius: 4vmin;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center;
-            align-items: center; 
-            cursor: pointer; 
-            box-shadow: 0 2vmin 5vmin rgba(0,0,0,0.15);
-            transition: transform 0.2s;
-            user-select: none;
-        }
-
-        #quadrado-noticia:active { transform: scale(0.96); }
-
-        h2 { 
-            color: #0056b3;
-            font-weight: bolder;
-            margin: 0; 
-            font-size: 10dvh; 
-            letter-spacing: 0.5vmin; 
-        }
-
-        .icon-jornal { 
-            font-size: 45dvh; 
-            color: #333; 
-            margin-top: 2dvh; 
-        }
-
-        #btn-refresh {
-            position: fixed;
-            bottom: 3dvh; 
-            right: 3dvh;
-            height: 20dvh;
-            width: 20dvh;
-            background-color: white;
-            border: 0.5vmin solid #0056b3;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 500;
-            box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.2);
-        }
-
-        #btn-refresh i {
-            font-size: 10dvh;
-            color: #0056b3;
-        }
-
-        /* Estilos customizados para o SweetAlert2 */
-        .swal-msg { font-size: 6dvh !important; color: #333; }
-        .swal-valor { font-size: 7dvh !important; font-weight: bold; margin-top: 2vh; display: block; }
-        .sorte { color: #28a745 !important; }
-        .azar { color: #dc3545 !important; }
-        .neutro { color: #0056b3 !important; }
-    </style>
-</head>
-<body>
-
-    <div id="quadrado-noticia" onclick="sortearNoticia()">
-        <h2>NOTÍCIA</h2>
-        <i class="fas fa-newspaper icon-jornal"></i>
-    </div>
-
-    <div id="btn-refresh" onclick="location.reload()">
-        <i class="fas fa-sync-alt"></i>
-    </div>
-
-    <audio id="audio-sorte" src="sounds/success.mp3" preload="auto"></audio>
-    <audio id="audio-azar" src="sounds/fail.mp3" preload="auto"></audio>
-    <audio id="audio-noticia" src="sounds/noticia.mp3" preload="auto"></audio>
-
-    <script type="module">
-        import { noticiasOriginais } from './noticias.js';
-
-        let noticiasAtuais = [...noticiasOriginais];
-
-        window.sortearNoticia = function() {
-            if (noticiasAtuais.length === 0) {
-                noticiasAtuais = [...noticiasOriginais];
+        <style>
+            body {
+                margin: 0; 
+                height: 100dvh; 
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                background-color: #f4f7f6; 
+                font-family: 'Verdana', sans-serif;
+                overflow: hidden;
+                width: 100vw;
             }
 
-            const indice = Math.floor(Math.random() * noticiasAtuais.length);
-            const noticia = noticiasAtuais[indice];
-            noticiasAtuais.splice(indice, 1);
+            #quadrado-noticia {
+                height: 90dvh; 
+                width: 90dvh; 
+                max-width: 95vw;
+                background-color: white;
+                border: 1.2vmin solid #0056b3; 
+                border-radius: 4vmin;
+                display: flex; 
+                flex-direction: column; 
+                justify-content: center;
+                align-items: center; 
+                cursor: pointer; 
+                box-shadow: 0 2vmin 5vmin rgba(0,0,0,0.15);
+                transition: transform 0.2s;
+                user-select: none;
+            }
 
-            const audioId = noticia.tipo === "sorte" ? 'audio-sorte' : 
-                          (noticia.tipo === "azar" ? 'audio-azar' : 'audio-noticia');
-            const audio = document.getElementById(audioId);
-            audio.currentTime = 0;
-            audio.play();
+            #quadrado-noticia:active { transform: scale(0.96); }
 
-            Swal.fire({
-                html: `
-                    <div class="swal-msg">${noticia.msg}</div>
-                    <div class="swal-valor ${noticia.tipo}">${noticia.valor}</div>
-                `,
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#0056b3',
-                width: '90dvw',
-                padding: '2em',
-                allowOutsideClick: false
-            });
-        };
+            h2 { 
+                color: #0056b3;
+                font-weight: bolder;
+                margin: 0; 
+                font-size: 10dvh; 
+                letter-spacing: 0.5vmin; 
+            }
 
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
-</body>
+            .icon-jornal { 
+                font-size: 45dvh; 
+                color: #333; 
+                margin-top: 2dvh; 
+            }
+
+            #btn-refresh {
+                position: fixed;
+                bottom: 3dvh; 
+                right: 3dvh;
+                height: 20dvh;
+                width: 20dvh;
+                background-color: white;
+                border: 0.5vmin solid #0056b3;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                z-index: 500;
+                box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.2);
+            }
+
+            #btn-refresh i {
+                font-size: 10dvh;
+                color: #0056b3;
+            }
+
+            /* Estilos customizados para o SweetAlert2 */
+            .swal-msg { font-size: 6dvh !important; color: #333; }
+            .swal-valor { font-size: 7dvh !important; font-weight: bold; margin-top: 2vh; display: block; }
+            .sorte { color: #28a745 !important; }
+            .azar { color: #dc3545 !important; }
+            .neutro { color: #0056b3 !important; }
+        </style>
+    </head>
+    <body>
+
+        <div id="quadrado-noticia" onclick="sortearNoticia()">
+            <h2>NOTÍCIA</h2>
+            <i class="fas fa-newspaper icon-jornal"></i>
+        </div>
+
+        <div id="btn-refresh" onclick="location.reload()">
+            <i class="fas fa-sync-alt"></i>
+        </div>
+
+        <audio id="audio-sorte" src="sounds/success.mp3" preload="auto"></audio>
+        <audio id="audio-azar" src="sounds/fail.mp3" preload="auto"></audio>
+        <audio id="audio-noticia" src="sounds/noticia.mp3" preload="auto"></audio>
+
+        <script type="module">
+            import { noticiasOriginais } from './noticias.js';
+
+            let noticiasAtuais = [...noticiasOriginais];
+
+            window.sortearNoticia = function() {
+                if (noticiasAtuais.length === 0) {
+                    noticiasAtuais = [...noticiasOriginais];
+                }
+
+                const indice = Math.floor(Math.random() * noticiasAtuais.length);
+                const noticia = noticiasAtuais[indice];
+                noticiasAtuais.splice(indice, 1);
+
+                const audioId = noticia.tipo === "sorte" ? 'audio-sorte' : 
+                            (noticia.tipo === "azar" ? 'audio-azar' : 'audio-noticia');
+                const audio = document.getElementById(audioId);
+                audio.currentTime = 0;
+                audio.play();
+
+                Swal.fire({
+                    html: `
+                        <div class="swal-msg">${noticia.msg}</div>
+                        <div class="swal-valor ${noticia.tipo}">${noticia.valor}</div>
+                    `,
+                    showConfirmButton: false, // Remove o botão OK
+                    allowOutsideClick: true,  // Permite fechar clicando fora
+                    width: '90dvw',
+                    padding: '4em',
+                    // Fecha ao clicar em qualquer lugar do popup
+                    didOpen: () => {
+                        const container = Swal.getPopup();
+                        container.style.cursor = 'pointer';
+                        container.addEventListener('click', () => {
+                            Swal.close();
+                        });
+                    }
+                }).then(() => {
+                    audio.pause();
+                });
+            };
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js');
+            }
+        </script>
+    </body>
 </html>
